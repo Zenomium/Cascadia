@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Cascadia" basedir="." default="jar">
+
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="classes"/>
+    <property name="doc.dir" value="docs/doc"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="jar.name" value="Cascadia.jar"/>
+    <property name="main.class" value="graphical.main.Main"/>
+
+    <path id="classpath.lib">
+        <fileset dir="${lib.dir}">
+            <include name="zen-6.0.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath.lib" includes="**/*.java">
+            <compilerarg value="--release"/>
+            <compilerarg value="23"/>
+            <compilerarg value="--enable-preview"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${build.dir}"/>
+
+        <jar destfile="${jar.name}" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="javadoc">
+        <mkdir dir="${doc.dir}"/>
+
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dir}" classpathref="classpath.lib">
+            <arg value="--release"/>
+            <arg value="23"/>
+            <arg value="--enable-preview"/>
+        </javadoc>
+    </target>
+
+    <target name="clean">
+        <delete includeEmptyDirs="true">
+            <fileset dir="${build.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </delete>
+        <delete dir="${doc.dir}"/>
+    </target>
+
+</project>
